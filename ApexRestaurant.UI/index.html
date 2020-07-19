@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Customers - jQuery EasyUI CRUD</title>
+	<link rel="stylesheet" type="text/css" href="https://www.jeasyui.com/easyui/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="https://www.jeasyui.com/easyui/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="https://www.jeasyui.com/easyui/themes/color.css">
+	<link rel="stylesheet" type="text/css" href="https://www.jeasyui.com/easyui/demo/demo.css">
+	<script type="text/javascript" src="https://www.jeasyui.com/easyui/jquery.min.js"></script>
+	<script type="text/javascript" src="https://www.jeasyui.com/easyui/jquery.easyui.min.js"></script>
+</head>
+<body>
+	<h2>Customers</h2>
+	<p>Click the buttons on datagrid toolbar to do CRUD actions.</p>
+	
+	<!--
+	<table id="dg" title="Customer" class="easyui-datagrid" style="width:700px;height:250px"
+			url="https://localhost:5001/api/customer"
+			toolbar="#toolbar" pagination="true"
+			rownumbers="true" fitColumns="true" singleSelect="true">
+		<thead>
+			<tr>
+				<th field="firstname" width="50">First Name</th>
+				<th field="lastname" width="50">Last Name</th>
+				<th field="address" width="50">Address</th>
+				<th field="phoneres" width="50">Phone (Res)</th>
+				<th field="phonemob" width="50">Phone (Mob)</th>
+				<th field="enrolldate" width="50">Enroll Date</th>
+			</tr>
+		</thead>
+	</table>
+	-->
+	<div id="toolbar">
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newCustomer()">New Customer</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editCustomer()">Edit Customer</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteCustomer()">Remove Customer</a>
+	</div>
+	
+	<div id="dlg" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons'">
+		<form id="fm" method="post" novalidate style="margin:0;padding:20px 50px">
+			<h3>Customer Information</h3>
+			<div style="margin-bottom:10px">
+				<input name="firstname" class="easyui-textbox" required="true" label="First Name:" style="width:100%">
+			</div>
+			<div style="margin-bottom:10px">
+				<input name="lastname" class="easyui-textbox" required="true" label="Last Name:" style="width:100%">
+			</div>
+			<div style="margin-bottom:10px">
+				<input name="address" class="easyui-textbox" required="true" label="Address:" style="width:100%">
+			</div>
+			<div style="margin-bottom:10px">
+				<input name="phoneres" class="easyui-textbox" required="true" label="Phone (Res):" style="width:100%">
+			</div>
+			<div style="margin-bottom:10px">
+				<input name="phonemob" class="easyui-textbox" required="true" label="Phone (Mob):" style="width:100%">
+			</div>
+			<div style="margin-bottom:10px">
+				<input name="enrolldate" class="easyui-textbox" required="true" label="Enroll Date:" style="width:100%">
+			</div>
+		</form>
+	</div>
+	<div id="dlg-buttons">
+		<a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveCustomer()" style="width:90px">Save</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">Cancel</a>
+	</div>
+	<script type="text/javascript">
+		var customer_url = 'https://localhost:5001/api/customer/';
+		$.ajax(
+				{
+					url:customer_url,
+					type:'get',
+					contentType:'application/json',
+					crossDomain : true,
+					beforeSend:function(){
+						console.log("before send");
+					},
+					success:function(result){
+						if (result.success){
+							$('#dg').datagrid('reload');	// reload the user data
+						} else {
+							$.messager.show({	// show error message
+								title: 'Error',
+								msg: result.errorMsg
+							});
+						}
+					},
+					error:function(){
+						$.messager.show({	// show error message
+								title: 'Error',
+								msg: "something went wrong"
+						});
+					},
+					complete:function(){
+						console.log("complete");
+					}
+				}
+			);
+	</script>
+	<script2 type="text/javascript">
+		var customer_url = 'https://localhost:5001/api/customer/';
+		function newCustomer(){
+			$('#dlg').dialog('open').dialog('center').dialog('setTitle','New Customer');
+			$('#fm').form('clear');
+			url=customer_url;
+		}
+		function editCustomer(){
+			var row = $('#dg').datagrid('getSelected');
+			if (row){
+				$('#dlg').dialog('open').dialog('center').dialog('setTitle','Edit Customer');
+				$('#fm').form('load',row);
+				url = customer_url+row.id;
+			}
+		}
+		function saveCustomer(){
+			$.ajax(
+				{
+					url:customer_url,
+					type:'put',
+					contentType:'application/json',
+					crossDomain : true,
+					success:function(result){
+						if (result.success){
+							$('#dg').datagrid('reload');	// reload the user data
+						} else {
+							$.messager.show({	// show error message
+								title: 'Error',
+								msg: result.errorMsg
+							});
+						}
+					},
+					error:function(){
+						$.messager.show({	// show error message
+								title: 'Error',
+								msg: "something went wrong"
+						});
+					}
+				}
+			);
+			$('#fm').form('submit',{
+				url: url,
+				onSubmit: function(){
+					return $(this).form('validate');
+				},
+				success: function(result){
+					var result = eval('('+result+')');
+					if (result.errorMsg){
+						$.messager.show({
+							title: 'Error',
+							msg: result.errorMsg
+						});
+					} else {
+						$('#dlg').dialog('close');		// close the dialog
+						$('#dg').datagrid('reload');	// reload the user data
+					}
+				}
+			});
+		}
+		function deleteCustomer(){
+			var row = $('#dg').datagrid('getSelected');
+			if (row){
+				$.messager.confirm('Confirm','Are you sure you want to delete this customer?',function(r){
+					if (r){
+						$.ajax(
+							{
+								url:customer_url,
+								type:'delete',
+								contentType:'application/json',
+								crossDomain : true,
+								success:function(result){
+									if (result.success){
+										$('#dg').datagrid('reload');	// reload the user data
+									} else {
+										$.messager.show({	// show error message
+											title: 'Error',
+											msg: result.errorMsg
+										});
+									}
+								},
+								error:function(){
+									$.messager.show({	// show error message
+											title: 'Error',
+											msg: "Something went wrong"
+									});
+								}
+							}
+						);
+					}
+				});
+			}
+		}
+	</script2>
+</body>
+</html>

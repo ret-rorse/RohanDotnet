@@ -1,0 +1,12 @@
+E:\C#\apxapi\apxapi\ApexRestaurant.Services\bin\Debug\netstandard2.0\ApexRestaurant.Services.deps.json
+E:\C#\apxapi\apxapi\ApexRestaurant.Services\bin\Debug\netstandard2.0\ApexRestaurant.Services.dll
+E:\C#\apxapi\apxapi\ApexRestaurant.Services\bin\Debug\netstandard2.0\ApexRestaurant.Services.pdb
+E:\C#\apxapi\apxapi\ApexRestaurant.Services\bin\Debug\netstandard2.0\ApexRestaurant.Repository.dll
+E:\C#\apxapi\apxapi\ApexRestaurant.Services\bin\Debug\netstandard2.0\ApexRestaurant.Repository.pdb
+E:\C#\apxapi\apxapi\ApexRestaurant.Services\obj\Debug\netstandard2.0\ApexRestaurant.Services.csprojAssemblyReference.cache
+E:\C#\apxapi\apxapi\ApexRestaurant.Services\obj\Debug\netstandard2.0\ApexRestaurant.Services.AssemblyInfoInputs.cache
+E:\C#\apxapi\apxapi\ApexRestaurant.Services\obj\Debug\netstandard2.0\ApexRestaurant.Services.AssemblyInfo.cs
+E:\C#\apxapi\apxapi\ApexRestaurant.Services\obj\Debug\netstandard2.0\ApexRestaurant.Services.csproj.CoreCompileInputs.cache
+E:\C#\apxapi\apxapi\ApexRestaurant.Services\obj\Debug\netstandard2.0\ApexRestaurant.Services.csproj.CopyComplete
+E:\C#\apxapi\apxapi\ApexRestaurant.Services\obj\Debug\netstandard2.0\ApexRestaurant.Services.dll
+E:\C#\apxapi\apxapi\ApexRestaurant.Services\obj\Debug\netstandard2.0\ApexRestaurant.Services.pdb

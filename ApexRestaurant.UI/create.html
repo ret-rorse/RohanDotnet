@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+    <title>Customer Add</title>
+</head>
+<body>
+    <h2>Apex Customers - Create</h2>
+    
+    <form id="customer-form">
+    <p>
+        <label for='id'>id</label>
+        <input type='text' name='id' value='1' />
+    </p>
+    <p>
+        <label for='firstName'>firstName</label>
+        <input type='text' name='firstName' value='test' />
+    </p>
+    <p>
+        <label for='lastName'>lastName</label>
+        <input type='text' name='lastName' value='name' />
+    </p>
+    <p>
+        <label for='address'>address</label>
+        <input type='text' name='address' value='ktm' />
+    </p>
+    <p>
+        <label for='phoneRes'>phoneRes</label>
+        <input type='text' name='phoneRes' value='0111' />
+    </p>
+    <p>
+        <label for='phoneMob'>phoneMob</label>
+        <input type='text' name='phoneMob' value='9999' />
+    </p>
+    <p>
+        <label for='enrollDate'>enrollDate</label>
+        <input type='text' name='enrollDate' value='2020-05-01' />
+    </p>
+    <p>
+        <label for='isActive'>isActive</label>
+        <input type='text' name='isActive' value='true' />
+    </p>
+    <p>
+        <label for='createdBy'>createdBy</label>
+        <input type='text' name='createdBy' value='admin' />
+    </p>
+    <p>
+        <label for='createdOn'>createdOn</label>
+        <input type='text' name='createdOn' value='2020-05-01' />
+    </p>
+    <p>
+        <label for='updatedBy'>updatedBy</label>
+        <input type='text' name='updatedBy' value='admin' />
+    </p>
+    <p>
+        <label for='updatedOn'>updatedOn</label>
+        <input type='text' name='updatedOn' value='2020-05-01' />
+    </p>
+    <button type="button" id="create">Create</button>
+    <button type="button" id="update">Update</button>
+    <button type="button" id="delete">Delete</button>
+</form>
+</body>
+<script type="text/javascript" src="js/jquery-3.5.0.min.js"></script>
+<script type="text/javascript" src="js/sweetalert2@9.js"></script>
+<script type="text/javascript">
+    var customer_url = 'https://localhost:5001/api/customer/';
+    
+    function get_data_from_ui(){
+        var form_items = $("#customer-form").serializeArray();
+        data = {};
+        for(s in form_items){
+            if (form_items[s]['value'] == "true"){
+                form_items[s]['value'] = true;
+            }
+            if (form_items[s]['name'] != "id"){
+                data[form_items[s]['name']] = form_items[s]['value']
+            }
+        } 
+        return JSON.stringify(data);
+    }
+
+    $(document).ready(function() {
+
+        // ----------------------------------------------------------------------------
+        // --------------------------------- create -----------------------------------
+        // ----------------------------------------------------------------------------
+        $("#create").click(function(){
+            var settings = {
+                "url": "https://localhost:5001/api/customer",
+                "method": "POST",
+                "timeout": 0,
+                "crossDomain": true,
+                "headers": {
+                    "Accept": "application/json",
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                "data": JSON.stringify({"firstName":"aaatestttt","lastName":"name","address":"ktm","phoneRes":"0111","phoneMob":"9999","enrollDate":"2020-05-01","isActive":true,"createdBy":"admin","createdOn":"2020-05-01","updatedBy":"admin","updatedOn":"2020-05-01"}),
+                // "data": get_data_from_ui(),
+            };
+
+            $.ajax(settings).done(function (response) {
+                console.log(response);
+            });
+        });
+        $("#create2").click(function(){
+            data = get_data_from_ui();
+            console.log(data);
+            swal = null;
+            $.ajax(
+				{
+					url:null,
+                    method:'POST',
+                    headers: { "Accept": "application/json" },
+                    data: data,
+					crossDomain : true,
+					beforeSend:function(){
+                        console.log("before send");
+						swal = Swal.fire({
+                            position: 'center',
+                            icon: 'info',
+                            title: 'Processing...',
+                            showConfirmButton: false,
+                            });
+					},
+					// success:function(result){
+                    //     console.log(result);
+                    //     Swal.fire({
+                    //         position: 'center',
+                    //         icon: 'success',
+                    //         title: 'Successfully saved',
+                    //         showConfirmButton: true,
+                    //         });
+					// },
+					error:function(e){
+                        console.log(e);
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'Error occured',
+                            showConfirmButton: true,
+                            });
+					},
+					complete:function(e){
+                        console.log("complete");
+                        console.log(e);
+                        swal.close();
+					}
+				}
+			);
+        });
+    });
+</script>
+</html>
